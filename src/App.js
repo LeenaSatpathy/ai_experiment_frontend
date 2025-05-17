@@ -1,9 +1,3 @@
-
-// React Frontend: Search, Visualization, and Hypothesis Suggestions
-<-- App.jsx content from canvas (shortened here for clarity) -->
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';  
 import React, { useState } from "react";
 import axios from "axios";
 import {
@@ -16,6 +10,8 @@ import {
   CartesianGrid,
 } from "recharts";
 
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
+
 export default function App() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
@@ -23,12 +19,11 @@ export default function App() {
   const [xAxis, setXAxis] = useState("Mixing Temperature");
   const [yAxis, setYAxis] = useState("Viscosity");
   const [suggestions, setSuggestions] = useState([]);
-  const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const res = await axios.post("${BACKEND_URL}/filter", { query });
+      const res = await axios.post(`${BACKEND_URL}/filter`, { query });
       setResults(res.data.matches);
     } catch (err) {
       console.error("Error fetching data:", err);
@@ -37,17 +32,9 @@ export default function App() {
     }
   };
 
-  const getScatterData = () => {
-    return results.map((exp) => ({
-      x: exp.inputs[xAxis] ?? exp.outputs[xAxis],
-      y: exp.inputs[yAxis] ?? exp.outputs[yAxis],
-      name: exp.name,
-    })).filter((d) => d.x !== undefined && d.y !== undefined);
-  };
-
   const fetchSuggestions = async () => {
     try {
-      const res = await axios.get("${BACKEND_URL}/suggest");
+      const res = await axios.get(`${BACKEND_URL}/suggest`);
       setSuggestions(res.data.suggestions);
     } catch (err) {
       console.error("Error getting suggestions:", err);
@@ -62,6 +49,14 @@ export default function App() {
       ])
     )
   ];
+
+  const getScatterData = () => {
+    return results.map((exp) => ({
+      x: exp.inputs[xAxis] ?? exp.outputs[xAxis],
+      y: exp.inputs[yAxis] ?? exp.outputs[yAxis],
+      name: exp.name,
+    })).filter((d) => d.x !== undefined && d.y !== undefined);
+  };
 
   return (
     <div className="min-h-screen bg-white p-6 max-w-4xl mx-auto">
