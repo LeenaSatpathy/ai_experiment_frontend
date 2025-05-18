@@ -15,6 +15,7 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 export default function App() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
+  const [summary, setSummary] = useState("");
   const [loading, setLoading] = useState(false);
   const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [xAxis, setXAxis] = useState("Mixing Temperature");
@@ -26,6 +27,7 @@ export default function App() {
     try {
       const res = await axios.post(`${BACKEND_URL}/filter`, { query });
       setResults(res.data.matches);
+      setSummary(res.data.summary || "");
     } catch (err) {
       console.error("Error fetching data:", err);
     } finally {
@@ -91,6 +93,10 @@ export default function App() {
           {loadingSuggestions ? "Generating..." : "💡 Suggest New Experiments"}
         </button>
       </div>
+
+      {summary && (
+        <p className="text-gray-700 italic mb-4">{summary}</p>
+      )}
 
       {results.length > 0 && (
         <>
