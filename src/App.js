@@ -16,6 +16,7 @@ export default function App() {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loadingSuggestions, setLoadingSuggestions] = useState(false);
   const [xAxis, setXAxis] = useState("Mixing Temperature");
   const [yAxis, setYAxis] = useState("Viscosity");
   const [suggestions, setSuggestions] = useState([]);
@@ -33,11 +34,14 @@ export default function App() {
   };
 
   const fetchSuggestions = async () => {
+    setLoadingSuggestions(true);
     try {
       const res = await axios.get(`${BACKEND_URL}/suggest`);
       setSuggestions(res.data.suggestions);
     } catch (err) {
       console.error("Error getting suggestions:", err);
+    } finally {
+      setLoadingSuggestions(false);
     }
   };
 
@@ -60,7 +64,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-white p-6 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-4">Search Experiments</h1>
+      <h1 className="text-3xl font-bold mb-4">Search Experiments</h1>
 
       <input
         type="text"
@@ -81,9 +85,10 @@ export default function App() {
 
         <button
           onClick={fetchSuggestions}
+          disabled={loadingSuggestions}
           className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700"
         >
-          💡 Suggest New Experiments
+          {loadingSuggestions ? "Generating..." : "💡 Suggest New Experiments"}
         </button>
       </div>
 
