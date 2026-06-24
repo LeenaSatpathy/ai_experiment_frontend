@@ -1,6 +1,6 @@
 # AI Experiment Frontend
 
-A React frontend for exploring and querying an experimental dataset. Built with Create React App and Tailwind CSS. The UI connects to a backend service to run advanced dataset filters and get AI-suggested hypotheses.
+A React frontend for exploring and querying an experimental dataset. Built with Create React App and Tailwind CSS. The UI connects to a backend service to run advanced dataset filters and get AI-suggested hypotheses. Demo for a startup. 
 
 Highlights
 - React (Create React App) application
