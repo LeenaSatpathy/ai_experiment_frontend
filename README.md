@@ -40,8 +40,3 @@ API integration
 - POST /filter — Accepts JSON { "query": "..." } and returns matched experiments
 - GET /suggest — Returns AI-generated hypothesis suggestions
 
-Notes
-- This repository includes a `package-lock.json` and `node_modules` which may increase clone size. Consider removing `node_modules` from the repo and adding/updating .gitignore if needed.
-
-License
-- Add your preferred license here.
